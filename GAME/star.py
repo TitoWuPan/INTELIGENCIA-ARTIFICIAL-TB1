@@ -1,7 +1,9 @@
+from operator import truediv
 from pygame import display, time, draw, QUIT, init, KEYDOWN, K_a, K_s, K_d, K_w
 from random import randint
 import pygame
 from numpy import sqrt
+from tkinter import messagebox
 
 def star():
     done = False
@@ -10,8 +12,8 @@ def star():
     GREEN = (0, 255, 0)
     RED = (255, 0, 0)
 
-    cols = 25
-    rows = 25
+    cols = 50
+    rows = 50
 
     width = 600
     height = 600
@@ -41,12 +43,13 @@ def star():
         closedset = []
         dir_array1 = []
     # The A* algorithm.
-        while 1:
+        while True:
         # Getting the Spot object with the lowest f value from the openset list and adding it to the
         # closedset list.
+            if openset == []:
+                messagebox.showinfo(message="SIN CAMINO", title="ERROR")
             current1 = min(openset, key=lambda x: x.f)
-            openset = [openset[i]
-                       for i in range(len(openset)) if not openset[i] == current1]
+            openset = [openset[i] for i in range(len(openset)) if not openset[i] == current1]
             closedset.append(current1)
             for neighbor in current1.neighbors:
                 if neighbor not in closedset and not neighbor.obstacule and neighbor not in snake1:
@@ -130,7 +133,7 @@ def star():
     # The main loop of the game. It is the loop that runs the game.
     while not done:
 
-        clock.tick(15)
+        clock.tick(50)
         screen.fill(BLACK)
         direction = dir_array.pop(-1)
         if direction == 0:
@@ -163,7 +166,7 @@ def star():
                     grid[i][j].show(GREEN)
 
         food.show(RED)
-        snake[-1].show(WHITE)
+        snake[-1].show((0, 0, 230))
         display.flip()
         for event in pygame.event.get():
             if event.type == QUIT:
